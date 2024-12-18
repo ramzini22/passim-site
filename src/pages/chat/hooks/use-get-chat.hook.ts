@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { getChatById } from '../../../root/api/chats';
 import { ChatType } from '../../../root/types/chat/chat.type.ts';
 
-const useGetChat = (): [boolean, ChatType | null] => {
+const useGetChat = (): [ChatType | null] => {
     const [chat, setChat] = useState<ChatType | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    // const [isLoading, setIsLoading] = useState<boolean>(true);
     const { id } = useParams();
     const { state }: { state: ChatType | undefined } = useLocation();
 
@@ -15,21 +15,21 @@ const useGetChat = (): [boolean, ChatType | null] => {
         if (state) {
             // чтобы при обновлении страницы обнулялся state и делался запрос на сервер
             window.history.replaceState({}, '');
-            setIsLoading(false);
+            // setIsLoading(false);
             return setChat(state);
         }
 
-        setIsLoading(true);
+        // setIsLoading(true);
 
         getChatById(id).then((result) => {
-            setIsLoading(false);
+            // setIsLoading(false);
 
             if (result.success && result.data) setChat(result.data);
             else setChat(null);
         });
     }, [id]);
 
-    return [isLoading, chat];
+    return [chat];
 };
 
 export default useGetChat;

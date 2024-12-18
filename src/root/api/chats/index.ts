@@ -3,8 +3,14 @@ import { CreateChatType } from '../../types/chat/create-chat.type.ts';
 import { CreateMessageType } from '../../types/chat/create-message.type.ts';
 import { ChatType } from '../../types/chat/chat.type.ts';
 
-export const getChats = async (title?: string, limit?: number, offset?: number): Promise<IData<ChatType[]>> => {
-    return Api<ChatType[]>('/chats', { params: { title, limit, offset } });
+export const getChats = async (
+    title?: string,
+    limit?: number,
+    offset?: number,
+    notFavoriteChatIds?: number[],
+    favoriteChatIds?: number[],
+): Promise<IData<ChatType[]>> => {
+    return Api<ChatType[]>('/chats', { params: { title, limit, offset, notFavoriteChatIds, favoriteChatIds } });
     // const response = await Api<EncryptChatItemType[]>('/chats', { params: { search, limit, offset } });
     //
     // if (!response.success || !response.data?.length) return { ...response, data: [] };
@@ -43,4 +49,8 @@ export const getChatById = async (id: string): Promise<IData<ChatType>> => {
 
 export const createMessage = (body: CreateMessageType) => {
     return Api('/messages', { body, method: 'POST' });
+};
+
+export const listenChats = (favoriteChatIds: number[]) => {
+    return Api('/chats/join', { method: 'POST', body: { favoriteChatIds } });
 };
